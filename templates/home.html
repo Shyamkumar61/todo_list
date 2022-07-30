@@ -1,0 +1,153 @@
+
+{% load todo_lst %}
+
+<html>
+    <head>
+      <style>
+        body {
+            font-family: arial;
+            background-color: rgb(85, 85, 85);
+        }
+        .header {
+            display: block;
+            width: 800px;
+            margin: auto;
+            font-weight: 500;
+            color: gray;
+            margin-top: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            margin: auto;
+            width: 800px;
+            height: 50px;
+            margin-top: 15px;
+            margin-bottom: 50px;
+        }
+        .left {
+            display: flex;
+            flex: 5;
+            border: none;
+            box-shadow: 2px 3px 10px rgb(49, 48, 48);
+            border-radius: 15px;
+        }
+        .right {
+        display: flex;
+        flex: 1;
+        justify-content: right;
+        background: -webkit-linear-gradient(  rgba(211, 98, 255, 1.0), rgba(166, 1, 255, 1.0));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+    }
+    .task {
+        display: flex;
+        flex-direction: row;
+    }
+    .task-head h1 {
+        display: block;
+            width: 800px;
+            margin: auto;
+            font-weight: 500;
+            font-size: 25px;
+            color: gray;
+            margin-bottom: 15px;
+    }
+    .task-section {
+        display: flex;
+        flex-direction: row;
+        width: 800px;
+        height: 50px;
+        border-radius: 15px;
+        background-color: rgb(56, 58, 58);
+        margin: auto;
+
+    }
+    .text {
+       display: flex;
+       flex: 1;
+        width: 200px;
+        background: none;
+        border: none;
+        margin-left: 30px;
+        
+
+    }
+    .edit-reset {
+        display: flex;
+        flex: 1;
+        justify-content: right;
+        gap: 30px;
+        margin-right: 30px;
+    }
+    .Edit {
+        background: none;
+        border: none;
+        font-weight: bold;
+        background: -webkit-linear-gradient(  rgba(211, 98, 255, 1.0), rgba(166, 1, 255, 1.0));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .reset {
+        background: none;
+        border: none;
+        font-weight: bold;
+        background: -webkit-linear-gradient( rgba(255, 23, 10, 1.0), rgba(249, 195, 182, 1.0));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+      </style>
+    </head>
+    <body>
+    {% block content %}
+
+        <h1 class="header">Task List 2022</h1>
+       <div class="container">
+               <input class="left" type="textbox" id="todo" placeholder="
+               What do you have planned?">
+               <div class="right">
+                <p id="p" class=>Add task</p>
+               </div> 
+       </div>
+       <div class="task-head">
+        <h1>Tasks</h1>
+       </div>
+        <form method="POST">
+            {% csrf_token %}
+                {% for item in todo %}
+                     <div class="task-section">
+                        <input class="text" type="text" placeholder="" id="title" value="{{item.title|upp}}">
+                         <i class="bi-check-circle" style="color:green"></i>
+                        <div class="edit-reset">
+                            <a href="{% url 'edit' item.id %}" class="Edit">Edit</a>
+                            <a href="{% url 'delete' item.id %}" class="reset">Delete</a>
+<!--                            <button class="reset">Delete</button>-->
+                        </div>
+                     </div>
+                    <br>
+            {% endfor %}
+        </form>
+    {% endblock %}
+    </body>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+            $('#p').click(function(){
+                var id = $('#todo_id').val();
+                var name = $('#todo').val();
+                $.ajax({
+                    type: 'Post',
+                    url: "{% url 'home' %}",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        name:name
+                    },
+                    success: function(data) {
+                        location.reload();
+                    },
+                });
+            });
+    </script>
+    {% endblock javascript %}
+</html>

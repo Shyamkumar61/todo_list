@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <label>Title</label>
+    <input type="text" id="title" name="title" value="{{todo.title}}">
+    <lable>Description</lable>
+    <textarea id="description" name="description">{{todo.description}}</textarea>
+    <label>Status</label>
+        <select name="status" id="status">
+
+            <option value="Completed" {%if todo.status == 'Completed' %} selected {% endif %}>Completed</option>
+
+      <option value="Ongoing" {%if todo.status == 'Ongoing' %} selected {% endif %}>Ongoing</option>
+
+            <option value="Pending" {%if todo.status == 'Pending' %} selected {% endif %}>Pending</option>
+
+            <option value="">Select A Status</option>
+
+</select>
+    <button type="submit">Submit</button>
+
+</form>
+{% endblock %}
+</body>
+</html>
